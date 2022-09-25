@@ -73,7 +73,7 @@
             $fetch_sql = mysqli_fetch_row($query_run);
 
             if(!$fetch_sql){
-               echo '<div class="alert alert-warning" role="alert">You have not added any friends</div>';
+               echo '<div class="alert alert-warning" role="alert" style="text-align:center; width: 40%; margin:auto; font-weight: bold;">You have not added any friends</div>';
             }
 
             if($query_run){
