@@ -59,3 +59,75 @@
          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       </nav>
+      <style>
+         .presonWrapper{
+            width: 300px;
+            margin-left: 5%;
+         }
+         .presonWrapper li {
+            list-style-type: none;
+         }
+         .presonWrapper img{
+            margin-top:20px;
+            margin-bottom:20px;
+            margin-left:20px;
+            width: 75px;
+            height: 75px;
+            border-radius:50%;
+         }
+
+         .person:hover{
+            background-color: #0099ff;
+            border-radius: 20px;
+         }
+         
+         .name{
+            font-weight: bold;
+            padding-left: 20px;
+            text-decoration: underline;
+         }
+      </style>
+      <div class="presonWrapper">
+         <?php
+         $servername = "db";
+         $username = "root";
+         $password = "root";
+         $dbname = "relations";
+
+         $connect_friends = mysqli_connect($servername,$username,$password,$dbname);
+         $sql = "SELECT * FROM `{$_SESSION['username']}`";
+
+         $query_run = mysqli_query($connect_friends, $sql);
+         $fetch_sql = mysqli_fetch_row($query_run);
+
+         if(!$fetch_sql){
+            echo '</div><div class="alert alert-warning" role="alert" style="text-align:center; width: 40%; margin:auto; font-weight: bold;">You have not added any friends</div>';
+         }
+
+         if($query_run){
+            
+            $person_index = 1;
+            foreach($query_run as $row){
+               $sql_pro_pic = "SELECT profilePic FROM `accounts` WHERE username = '{$row['Friends']}'";
+               $query_run_pro_pic = mysqli_query($connect, $sql_pro_pic);
+               $profilepic = mysqli_fetch_row($query_run_pro_pic);
+
+               
+               $userurl = 'user.php?username='.$row['Friends'].'';
+               echo "<li class='person' data-chat='person$person_index'>
+                        <img src='/ProfilePics/$profilepic[0]' alt='{$row['Friends']} Profile Picture' />
+                        <span class='name'>{$row['Friends']}:</span>
+                     </li>
+                     <hr style='width:80%;height:2px;border-width:0;color:gray;background-color:gray'>";
+               
+               $person_index ++;
+               
+            }
+         }else{
+            echo "An error has occured please reload the page";
+         }
+         ?>
+      </div>
+   
+
+   </body>
