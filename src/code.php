@@ -6,11 +6,13 @@
    if(isset($_POST['login_btn']))
    {
        $username_login = strtolower($_POST['username']);
-       $salt = ")HB(Y&*Rjnmda98s7$_)*KLJ";
-       $password_login = $_POST['password'].$salt;
-       $password_login = sha1($password_login);
 
-       $query = "SELECT * FROM accounts WHERE username='$username_login' AND password = '$password_login' ";
+       $password= $_POST['password'];
+       $pepper = getConfigVariable("pepper");
+       $pwd_peppered = hash_hmac("sha256", $password, $pepper);
+       $pwd_hashed = password_hash($pwd_peppered, PASSWORD_ARGON2ID);
+
+       $query = "SELECT * FROM accounts WHERE username='$username_login' AND password = '$pwd_hashed' ";
        $query_run = mysqli_query($connect, $query);
        $usertype = mysqli_fetch_array($query_run);
 
