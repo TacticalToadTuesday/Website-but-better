@@ -6,11 +6,12 @@
    if(isset($_POST['login_btn']))
    {
        $username_login = strtolower($_POST['username']);
+
        $pepper = 'pajhfakjdhflashdhf';
        $pwd = $_POST['password'];
        $pwd_peppered = hash_hmac("sha256", $pwd, $pepper);
        $pwd_hashed = password_hash($pwd_peppered, PASSWORD_ARGON2ID);
-   
+        $_SESSION['status'] = $pwd_hashed
 
        $query = "SELECT * FROM accounts WHERE username='$username_login' AND password = '$pwd_hashed' ";
        $query_run = mysqli_query($connect, $query);
