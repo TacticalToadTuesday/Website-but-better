@@ -33,7 +33,7 @@
          }
 
          ?>
-        <form action="code.php" method="post"  class="md-float-material form-material" >
+        <form action="code.php" method="post" class="md-float-material form-material" >
         <!-- <div align="center">
             <h2 class="text-muted text-center p-b-5">Sign in with your regular account</h2>
             <br>
