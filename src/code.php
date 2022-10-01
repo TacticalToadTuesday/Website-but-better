@@ -10,8 +10,7 @@
        $pepper = 'pajhfakjdhflashdhf';
        $pwd = $_POST['password'];
        $pwd_peppered = hash_hmac("sha256", $pwd, $pepper);
-       $pwd_hashed = password_hash($pwd_peppered, PASSWORD_ARGON2ID);
-        $_SESSION['status'] = $pwd_hashed
+       $pwd_hashed = password_hash($pwd_peppered, PASSWORD_ARGON2ID, ['memory_cost' => 2048, 'time_cost' => 4, 'threads' => 3]);
 
        $query = "SELECT * FROM accounts WHERE username='$username_login' AND password = '$pwd_hashed' ";
        $query_run = mysqli_query($connect, $query);
@@ -56,7 +55,7 @@
     $pepper = 'pajhfakjdhflashdhf';
     $pwd = $_POST['password'];
     $pwd_peppered = hash_hmac("sha256", $pwd, $pepper);
-    $pwd_hashed = password_hash($pwd_peppered, PASSWORD_ARGON2ID);
+    $pwd_hashed = password_hash($pwd_peppered, PASSWORD_ARGON2ID, ['memory_cost' => 2048, 'time_cost' => 4, 'threads' => 3]);
 
 
     $sql_u = "SELECT * FROM accounts WHERE username='$username'";
