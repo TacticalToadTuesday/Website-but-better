@@ -46,11 +46,9 @@
    if(isset($_POST['register'])){
     $username = $_POST['username'];
     $email = $_POST['email'];
-    
     $salt = ")HB(Y&*Rjnmda98s7$_)*KLJ";
-    $password = $_POST['password'].salt;
+    $password = $_POST['password'].$salt;
     $password = sha1($password);
-
     $usertype = 'user';
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
