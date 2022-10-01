@@ -6,13 +6,11 @@
    if(isset($_POST['login_btn']))
    {
        $username_login = strtolower($_POST['username']);
+       $salt = ")HB(Y&*Rjnmda98s7$_)*KLJ";
+       $password_login = $_POST['password'].$salt;
+       $password_login = sha1($password_login);
 
-       $password= $_POST['password'];
-       $pepper = getConfigVariable("pepper");
-       $pwd_peppered = hash_hmac("sha256", $password, $pepper);
-       $pwd_hashed = password_hash($pwd_peppered, PASSWORD_ARGON2ID);
-
-       $query = "SELECT * FROM accounts WHERE username='$username_login' AND password = '$pwd_hashed' ";
+       $query = "SELECT * FROM accounts WHERE username='$username_login' AND password = '$password_login' ";
        $query_run = mysqli_query($connect, $query);
        $usertype = mysqli_fetch_array($query_run);
 
@@ -49,12 +47,10 @@
     $username = $_POST['username'];
     $email = $_POST['email'];
     
-    $password = $_POST['password'];
-    $pepper = getConfigVariable("pepper");
-    $pwd_peppered = hash_hmac("sha256", $password, $pepper);
-    $pwd_hashed = password_hash($pwd_peppered, PASSWORD_ARGON2ID);
+    $salt = ")HB(Y&*Rjnmda98s7$_)*KLJ";
+    $password = $_POST['password'].salt;
+    $password = sha1($password);
 
-    # $password = sha1($password);
     $usertype = 'user';
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
@@ -77,7 +73,7 @@
           $_SESSION['status'] = "Account Created Failed, Email Already Taken, Please Sign-In"; 
           header('location:register.php');
     }else{
-        $query = "INSERT INTO accounts(username, firstname, lastname, email, password, usertype) VALUES('$username', '$firstname', '$lastname', '$email', '$pwd_hashed', '$usertype')";
+        $query = "INSERT INTO accounts(username, firstname, lastname, email, password, usertype) VALUES('$username', '$firstname', '$lastname', '$email', '$password', '$usertype')";
         $result = mysqli_query($connect, $query);
 
         $query_bio = "INSERT INTO bio(user) VALUES ('$username')";
