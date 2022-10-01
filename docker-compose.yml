@@ -21,7 +21,7 @@ services:
         - mysql-data:/var/lib/mysql
 
   adminer:
-    image: adminer
+    image: phpmyadmin
     restart: always
     ports:
       - 8080:8080
