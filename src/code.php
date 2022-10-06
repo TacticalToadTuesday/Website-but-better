@@ -17,9 +17,7 @@
        $passwordHash = mysqli_fetch_row($query_run);
 
        $password = $_POST['password'];
-        $isValid = password_verify($password, $passwordHash);
-
-        if ($isValid == True){
+        if(password_verify($pwd_hashed, $passwordHash[0])){
             $dir = 'profiles/'.$_POST['username'];
             $_SESSION['user_dir'] = $dir;
 
@@ -32,9 +30,7 @@
             $_SESSION['firstname'] = $usertype['firstname'];
             $_SESSION['lastname'] = $usertype['lastname'];
             header('Location:index.php');
-       }
-       else
-       {
+       }else{
            $_SESSION['status'] = "Invalid User Details";
            header('Location:login.php');
        }
@@ -65,6 +61,7 @@
     if (preg_match($illegalSymbols, $username) || preg_match($illegalSymbols, $firstname) || preg_match($illegalSymbols, $lastname))
     {
         $_SESSION['status'] = "Special Charaters are not allows";
+        header('location:register.php');
     }else if (mysqli_num_rows($res_u) > 0) {
   	    $_SESSION['status'] = "Account Created Failed, Username Already Taken"; 
         header('location:register.php');	
