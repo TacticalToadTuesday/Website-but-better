@@ -118,8 +118,9 @@
          <div class="form-popup" id="myForm">
             <form method="POST" action="" enctype="multipart/form-data" class="form-container">
                <h1>Make A Post:</h1>
-               <label for="email"><b>Title:</b></label>
-               <input type="text" name="PostTitle" placeholder="Caption Post" name="email" required>
+               <label for="email"><b>Title:</b></label> <span id="charNum">50</span>/50
+               
+               <input type="text" name="PostTitle" placeholder="Caption Post" name="email" maxlength="50" onkeyup="countChar(this)" required>
                <h2>Select image to upload:</h2>
                <input type="file" name="fileToUpload" id="fileToUpload" required>
                <br><button type="submit" name="makePost" class="btn">Make Post</button>
@@ -136,6 +137,13 @@
                document.getElementById("myForm").style.display = "none";
                document.getElementById("post-button").style.display = "block";
             }
+            // Shows remaining charaters
+            function countChar(val) {
+               var len = val.value.length;
+               
+               $('#charNum').text(50 - len);
+               
+            };
          </script>
          <?php
             error_reporting(0);
@@ -160,9 +168,13 @@
                      $contents = $newfilename;
                      // Now let's move the uploaded image into the folder: image
                      if (move_uploaded_file($tempname, $folder)) {
-                           echo "<h3> Posted successfully!</h3>";
+                           echo '<div class="alert alert-success" role="alert"  style="text-align:center; width: 40%; margin:auto; font-weight: bold;">
+                                    Posted successfully!
+                                 </div>';
                      } else {
-                           echo "<h3> Failed to upload image!</h3>";
+                           echo '<div class="alert alert-danger" role="alert"  style="text-align:center; width: 40%; margin:auto; font-weight: bold;">
+                                    Failed to upload image!
+                                 </div>';
                      }   
                      
                      $servername = "db";
@@ -200,7 +212,6 @@
                      $sql_friends = "SELECT * FROM `{$_SESSION['username']}`";
                      $result = $conn->query($sql_friends);
                      while($row = $result->fetch_assoc()) {
-                        echo $row['Friends'];
                         //$dbname = "Feeds";
                         //$conn = new mysqli($servername, $username, $password, $dbname);
                         //$sql_friends = "INSERT INTO `{$row['Friends']}`(`Poster`, `Title`, `Contents`) VALUES ('{$_SESSION['username']}', '{$_POST['PostTitle']}','$contents')";
@@ -237,7 +248,9 @@
                      }
                      $conn->close();
                   }else{
-                     echo "<h3>Please upload a valid image (Supported formats include; .jpg .png and .gif)</h3>";
+                     echo '<div class="alert alert-danger" role="alert"  style="text-align:center; width: 40%; margin:auto; font-weight: bold;">
+                              Please upload a valid image (Supported formats include; .jpg .png and .gif)
+                           </div>';
                   }     
                }
             }
@@ -247,51 +260,44 @@
       <hr style="width:80%;height:2px;border-width:0;color:gray;background-color:gray">
       <style>
          .PostWrapper{
-               padding: 10px 10px;
-               display: grid;
-               justify-content: center;
-               margin: 20px;
-         }
-         .userpost{
-               border: 1px black solid;
-               display: flex;
-               justify-content: center;
-               text-align: center;
-               padding: 5px 0;
-               margin: 20px;
-               padding: 10px;
-               width: 510px;
-               height: 550px;
-         }
-         .userpost span{
-            font-weight: bold;
-            font-size: 30px;
-         }
-         .userpost p{
-            font-weight: bold;
-            font-size: 20px;
-            color: grey;
-         }
+            padding: 10px 10px;
+            display: grid;
+            justify-content: center;
+            margin: 20px;
+        }
+        .userpost{
+            border: 1px black solid;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            padding: 5px 0;
+            margin: 20px;
+            padding: 10px;
+            width: 510px;
+            height: 510px;
+            position: relative;
+        }
 
-         .userpost img{
-               width: 400px;
-               height: 400px;
-               object-fit: contain;
-               padding: 10px;
-               
-         }
-         .like{
-               position: relative;
-               left:-200px;
-               font-weight: bold;
-            font-size: 30px;
-         }
-         .commment{
-               position: relative;
-               right:-200px;
-               font-weight: bold;
-            font-size: 30px;
-         }
+        .userpost img{
+            width: 400px;
+            height: 400px;
+            object-fit: contain;
+            padding: 10px;
+        }
+        .like{
+            position: absolute;
+            left:10px;
+            bottom:10px;
+        }
+        .commment{
+            position: absolute;
+            right: 10px;
+            bottom:10px;
+        }
+        .PostTitle{
+            font-weight: bold;
+            font-size:100%;
+        }
       </style>
       <div class="PostWrapper">
          <?php
@@ -316,9 +322,9 @@
 
                      echo '<div class="post">
                               <div class="userpost">
-                              <div class="post_title"><span>'.$row["Title"].'</span><p>Posted By: '.$row['Poster'].'</p>
+                              <div class="post_title"><span class="PostTitle">'.$row["Title"].'</span><p>Posted By: '.$row['Poster'].'</p>
                               <div class="post_img"><img class="image" src="/Posts/'.$row['Poster'].'/'.$row['Contents'].'" alt="'.$row["Title"].'"></div>
-                              <button class="like"><i class="fa-regular fa-heart"></i></button><button class="commment"><i class="fa-regular fa-comment"></i></button></div>
+                              <button class="like"><i class="fa-solid fa-heart"></i></button><button class="commment"><i class="fa-solid fa-comment"></i></button></div>
                               </div>
                            </div>';
                   }

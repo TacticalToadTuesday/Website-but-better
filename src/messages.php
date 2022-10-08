@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <title>Add Friends</title>
+      <title>Messages</title>
       <link rel="stylesheet" href="./style.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
    </head>
@@ -64,6 +64,9 @@
             width: 300px;
             margin-left: 5%;
          }
+         .presonWrapper a{
+            text-decoration: none;
+         }
          .presonWrapper li {
             list-style-type: none;
          }
@@ -114,10 +117,10 @@
 
                
                $userurl = 'user.php?username='.$row['Friends'].'';
-               echo "<li class='person' data-chat='person$person_index'>
+               echo "<a href='?user={$row['Friends']}'><li class='person' data-chat='person$person_index'>
                         <img src='/ProfilePics/$profilepic[0]' alt='{$row['Friends']} Profile Picture' />
                         <span class='name'>{$row['Friends']}:</span>
-                     </li>
+                     </li></a>
                      <hr style='width:80%;height:2px;border-width:0;color:gray;background-color:gray'>";
                
                $person_index ++;

@@ -76,7 +76,8 @@
          $code = sprintf("%06d", mt_rand(1, 999999));
          echo "<h1>$code</h1>";
          
-         $query_insert = "INSERT INTO `userfriendcodes`(`Code`, `ID`) VALUES ('{$code}','{$_SESSION['acc_id']}')";
+         $query_insert = "INSERT INTO `userfriendcodes` (`Code`, `ID`) VALUES ('{$code}','{$_SESSION['acc_id']}')";
+         echo $query_insert;
          $query_run_insert = mysqli_query($connect, $query_insert);
          ?>
       <style>
@@ -104,7 +105,7 @@
          }
 
                         // sql to create table
-         $sql = "CREATE TABLE IF NOT EXISTS {$_SESSION['username']} (
+         $sql = "CREATE TABLE IF NOT EXISTS `{$_SESSION['username']}` (
             Friends varchar(255),
             add_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);";
 
@@ -112,7 +113,7 @@
          $conn->close();
 
          if(isset($_POST['addUser'])){
-            $query = "SELECT `ID` FROM `userfriendcodes` WHERE Code = {$_POST['entercode']}";
+            $query = "SELECT `ID` FROM `userfriendcodes` WHERE Code = '{$_POST['entercode']}'";
             $query_run= mysqli_query($connect, $query);
             $result = mysqli_fetch_row($query_run);
 
@@ -123,7 +124,7 @@
                         <strong>Error!</strong> Could not find the user.
                      </div>';
             }else{
-               $query_name = "SELECT username FROM `accounts` WHERE id = {$result[0]}";
+               $query_name = "SELECT username FROM `accounts` WHERE id = '{$result[0]}'";
                $query_run_name= mysqli_query($connect, $query_name);
                $useradded = mysqli_fetch_row($query_run_name);
 
@@ -205,8 +206,8 @@
                      die("Connection failed: " . $conn->connect_error);
                   }   
                   
-                  $sql = "INSERT IGNORE INTO {$_SESSION['username']} (`Friends`) VALUES ('{$row['sender']}')";
-                  $sql_user = "INSERT IGNORE INTO {$row['sender']} (`Friends`) VALUES ('{$_SESSION['username']}')";
+                  $sql = "INSERT IGNORE INTO `{$_SESSION['username']}` (`Friends`) VALUES ('{$row['sender']}')";
+                  $sql_user = "INSERT IGNORE INTO `{$row['sender']}` (`Friends`) VALUES ('{$_SESSION['username']}')";
                   $conn->query($sql);
                   $conn->query($sql_user);
                   $conn->close();

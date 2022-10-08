@@ -68,9 +68,13 @@
 
             $connect_friends = mysqli_connect($servername,$username,$password,$dbname);
             $sql = "SELECT * FROM `{$_SESSION['username']}`";
-
             $query_run = mysqli_query($connect_friends, $sql);
-            $fetch_sql = mysqli_fetch_row($query_run);
+
+            if(!$query_run){
+               die(mysqli_error($connect_friends));
+            }
+            
+            $fetch_sql = mysqli_fetch_array($query_run);
 
             if(!$fetch_sql){
                echo '<div class="alert alert-warning" role="alert" style="text-align:center; width: 40%; margin:auto; font-weight: bold;">You have not added any friends</div>';

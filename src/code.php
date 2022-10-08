@@ -5,19 +5,22 @@
    //login
    if(isset($_POST['login_btn']))
    {
-       $username_login = strtolower($_POST['username']);
+        $username_login = strtolower($_POST['username']);
 
-       $pepper = 'pajhfakjdhflashdhf';
-       $pwd = $_POST['password'];
-       $pwd_peppered = hash_hmac("sha256", $pwd, $pepper);
-       $pwd_hashed = password_hash($pwd_peppered, PASSWORD_ARGON2ID, ['memory_cost' => 2048, 'time_cost' => 4, 'threads' => 3]);
+        $pepper = 'pajhfakjdhflashdhf';
+        $pwd = $_POST['password'];
+        $pwd_peppered = hash_hmac("sha256", $pwd, $pepper);
+        
+        $query = "SELECT password FROM accounts WHERE username='$username_login'";
+        $query_run = mysqli_query($connect, $query);
+        $passwordHash = mysqli_fetch_row($query_run);
+        $_SESSION['status'] = $passwordHash[0];
 
-       $query = "SELECT password FROM accounts WHERE username='$username_login'";
-       $query_run = mysqli_query($connect, $query);
-       $passwordHash = mysqli_fetch_row($query_run);
+        if(password_verify($pwd_peppered, $passwordHash[0])){
+            $query = "SELECT * FROM accounts WHERE username='$username_login'";
+            $query_run = mysqli_query($connect, $query);
+            $usertype = mysqli_fetch_array($query_run);
 
-       $password = $_POST['password'];
-        if(password_verify($pwd_hashed, $passwordHash[0])){
             $dir = 'profiles/'.$_POST['username'];
             $_SESSION['user_dir'] = $dir;
 
@@ -31,7 +34,7 @@
             $_SESSION['lastname'] = $usertype['lastname'];
             header('Location:index.php');
        }else{
-           $_SESSION['status'] = "Invalid User Details";
+           $_SESSION['status'] = "Error Incorrect Password";
            header('Location:login.php');
        }
    }

@@ -239,11 +239,11 @@
             text-align: center;
             padding: 5px 0;
             font-weight: bold;
-            font-size: 30px;
             margin: 20px;
             padding: 10px;
             width: 510px;
             height: 510px;
+            position: relative;
         }
 
         .userpost img{
@@ -251,15 +251,20 @@
             height: 400px;
             object-fit: contain;
             padding: 10px;
-            
         }
         .like{
-            position: relative;
-            left:-200px;
+            position: absolute;
+            left:10px;
+            bottom:10px;
         }
         .commment{
-            position: relative;
-            right:-200px;
+            position: absolute;
+            right: 10px;
+            bottom:10px;
+        }
+        .PostTitle{
+            font-weight: bold;
+            font-size: 100%;
         }
     </style>
     
@@ -286,7 +291,7 @@
 
                     echo '<div class="post">
                             <div class="userpost">
-                            <div class="post_title"><span>'.$row["Title"].'</span>
+                            <div class="post_title"><span class="PostTitle">'.$row["Title"].'</span>
                             <div class="post_img"><img class="image" src="/Posts/'.$params['username'].'/'.$row['Contents'].'" alt="'.$row["Title"].'"></div>
                             <button class="like"><i class="fa-regular fa-heart"></i></button><button class="commment"><i class="fa-regular fa-comment"></i></button></div>
                             </div>

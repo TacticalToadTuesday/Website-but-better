@@ -10,14 +10,20 @@
     // Check connection
     if ($conn->connect_error) {
        die("Connection failed: " . $conn->connect_error);
+       $_SESSION['status'] = "Database error";
     }
 
     // sql to create table
-    $sql = "CREATE TABLE IF NOT EXISTS {$_SESSION['username']} (
-       Friends varchar(255) PRIMARY KEY,
-       add_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);";
-
-    $conn->query($sql);   
+    $sql = " CREATE TABLE IF NOT EXISTS `{$_SESSION['username']}` (
+      `Friends` VARCHAR(255) NOT NULL,
+      `add_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (`Friends`)
+      );";
+    $conn->query($sql);  
+    
+    if(!$conn->query($sql)){
+      die(mysqli_error($conn));
+   }
     $conn->close();
 ?>
 
@@ -36,7 +42,7 @@
     }
 
     // sql to create table
-    $sql = "CREATE TABLE IF NOT EXISTS {$_SESSION['username']} (
+    $sql = "CREATE TABLE IF NOT EXISTS `{$_SESSION['username']}` (
        PostID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
        Title varchar(255),
        Contents varchar(255),
@@ -70,7 +76,7 @@
     }
 
     // sql to create table
-    $sql = "CREATE TABLE IF NOT EXISTS {$_SESSION['username']} (
+    $sql = "CREATE TABLE IF NOT EXISTS `{$_SESSION['username']}` (
        Poster varchar(255),
        Title varchar(255),
        Contents varchar(255),
