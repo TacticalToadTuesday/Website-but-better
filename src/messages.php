@@ -61,8 +61,12 @@
       </nav>
       <style>
          .presonWrapper{
-            width: 300px;
-            margin-left: 5%;
+            width: 20%;
+            min-width: 150px;
+            height: 85vh;
+            padding-left: 10px;
+            padding-right: 10px;
+            border-right: 2px solid gray;
          }
          .presonWrapper a{
             text-decoration: none;
@@ -89,8 +93,14 @@
             padding-left: 20px;
             text-decoration: underline;
          }
+         .personWrapper, .Messages {
+            display: inline-block;
+            display: flex;
+            justify-content: center;
+         }
       </style>
-      <div class="presonWrapper">
+      <div class="PageWrapper">
+      <div class="presonWrapper" style="float:left; overflow:auto;">
          <?php
          $servername = "db";
          $username = "root";
@@ -131,6 +141,97 @@
          }
          ?>
       </div>
-   
+      <style>
+         .Messages{
+            margin: auto;
+            height: 90vh;
+            width: 70%;
+         }
+         .TextEntry{
+            width:100%;
+            display: block;
+         }
+         .TextEntry input{
+            width: 40%;
+         }
+         .messages-Wrapper{
+            display: block;
+         }
+      </style>
+      <div class= "Messages">
+         <div class="messages-Wrapper">
+         <?php
+            $uri = $_SERVER['REQUEST_URI'];
+            $url_components = parse_url($uri);
+            parse_str($url_components['query'], $params);
 
+            $servername = "db";
+            $username = "root";
+            $password = "root";
+            $dbname = "relations";
+
+            // Create connection
+            $conn = new mysqli($servername, $username, $password, $dbname);
+            // Check connection
+            if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+            }
+
+            $sql_posts = "SELECT `Friends` FROM `{$_SESSION['username']}` WHERE Friends = '".$params['user']."'";
+            $result = $conn->query($sql_posts);
+            $fetch_sql = mysqli_fetch_row($result);
+
+            if(!$params['user']){
+               die;
+            }else if (!$fetch_sql) {
+               echo '<div class="alert alert-danger" role="alert" style="text-align:center; width: 40%; margin:auto; font-weight: bold;">
+                        Unable to load user: You have not added them
+                  </div>';
+                  $conn->close();
+               die;
+            }else{
+               echo "<h1 style='text-align: center; text-decoration: underline;'>{$params['user']}</h1>";
+            }
+
+            $conn->close();
+         ?>
+         <style>
+            /* */
+            .Messagebox{
+               position: relative;
+               width:70vw;
+               height: 70vh;
+               padding:2px;
+               overflow:auto;
+            }
+            .TextEntry{
+               display: flex;
+               justify-content: center;
+            }
+            form{
+               position: relative;
+               margin: auto;
+               width: 70%;
+            }
+            form input{
+            }
+         </style>
+         <div class="Messagebox">
+            <?php
+            echo "No messages yet";
+            ?>
+         </div>
+
+
+         <form action="" method="post" class="messageText-form">
+            <div class="TextEntry">
+               <input type="text">
+               <button> send </button>
+               <button>file</button>
+            </div>
+         </form>
+      </div>
+      </div>
+   </div>
+        
    </body>

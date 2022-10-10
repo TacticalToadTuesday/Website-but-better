@@ -6,8 +6,7 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <title>Add Friends</title>
-      <link rel="stylesheet" href="./style.css">
+      <title>Friends</title>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
    </head>
    <body>
@@ -59,7 +58,7 @@
          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       </nav>
-    
+         <h1 style="text-align: center;">My Friends:</h1>
         <?php
             $servername = "db";
             $username = "root";
@@ -101,8 +100,32 @@
                echo "An error has occured please reload the page";
             }
         ?>
-    
+      <style>
+         .usersWrapper{
+            padding: 50px 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 270px));
+            grid-template-rows: repeat(4, minmax(270px, 270px));
+            justify-content: center;
+            position: relative;
+         }
 
+         .user_box{
+            width: 250px;
+            height: 250px;
+            margin: 10%;
+            border: 1px black solid;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            padding: 20% 0;
+         }
+         .user_box img{
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+         }
+      </style>
         
       
       

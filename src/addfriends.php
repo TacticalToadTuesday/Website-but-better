@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <title>Home</title>
+      <title>Add Friends</title>
       <link rel="stylesheet" href="./style.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
    </head>
@@ -74,15 +74,20 @@
          
          
          $code = sprintf("%06d", mt_rand(1, 999999));
-         echo "<h1>$code</h1>";
+         echo "<h1 class='code'>$code</h1>";
          
          $query_insert = "INSERT INTO `userfriendcodes` (`Code`, `ID`) VALUES ('{$code}','{$_SESSION['acc_id']}')";
-         echo $query_insert;
          $query_run_insert = mysqli_query($connect, $query_insert);
          ?>
       <style>
          .UserEnterCode{
          width: 200px;
+         }
+         .code{
+            text-align: center;
+         }
+         .EnterCodeDiv{
+            text-align: center;
          }
       </style>
       <form action="" method="post" class="addfriend-form">
@@ -141,7 +146,7 @@
                   die("Connection failed: " . $conn->connect_error);
                }   
                
-               $sql = "INSERT INTO `requests` (`sender`, `receiver`) VALUES ('{$_SESSION['username']}','{$useradded[0]}')";
+               $sql = "INSERT INTO `requests` (`sender`, `receiver`) VALUES ('{$_SESSION['username']}','{$useradded['0']}')";
                $conn->query($sql);
                $conn->close();
                
@@ -155,7 +160,7 @@
                //$conn->close();
                
                //Displays Success message when user is added.
-               echo '<div class="alert alert-success" role="alert">
+               echo '<div class="alert alert-success" role="alert" style="text-align:center; width: 40%; margin:auto; font-weight: bold; margin-top:20px;">
                         <a href="#" class="close" data-dismiss="alert">&times;</a>
                         Added User <strong>'.$useradded['0'].'</strong>
                      </div>';

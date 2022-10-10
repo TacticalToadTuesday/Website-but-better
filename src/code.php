@@ -14,7 +14,6 @@
         $query = "SELECT password FROM accounts WHERE username='$username_login'";
         $query_run = mysqli_query($connect, $query);
         $passwordHash = mysqli_fetch_row($query_run);
-        $_SESSION['status'] = $passwordHash[0];
 
         if(password_verify($pwd_peppered, $passwordHash[0])){
             $query = "SELECT * FROM accounts WHERE username='$username_login'";
