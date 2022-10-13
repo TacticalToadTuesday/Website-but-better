@@ -2,6 +2,7 @@
    include('security.php');
    require "database/dbconfig.php";
    require "database/makedatabases.php";
+   require "messagedbcreate.php";
    ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -138,6 +139,7 @@
             }
          }else{
             echo "An error has occured please reload the page";
+            die;
          }
          ?>
       </div>
@@ -184,7 +186,7 @@
             if(!$params['user']){
                die;
             }else if (!$fetch_sql) {
-               echo '<div class="alert alert-danger" role="alert" style="text-align:center; width: 40%; margin:auto; font-weight: bold;">
+               echo '<div class="alert alert-danger" role="alert" style="text-align:center; width: 100%; margin:auto; font-weight: bold;">
                         Unable to load user: You have not added them
                   </div>';
                   $conn->close();
@@ -196,13 +198,13 @@
             $conn->close();
          ?>
          <style>
-            /* */
             .Messagebox{
                position: relative;
                width:70vw;
                height: 70vh;
                padding:2px;
                overflow:auto;
+               margin-bottom: 20px;
             }
             .TextEntry{
                display: flex;
@@ -211,27 +213,95 @@
             form{
                position: relative;
                margin: auto;
-               width: 70%;
+               width: 70vw;
             }
             form input{
             }
          </style>
-         <div class="Messagebox">
+
+         <!-- Messages style -->
+         <style>
+            .container {
+               border: 2px solid blue;
+               background-color: #147efb;
+               color:white;
+               border-radius: 5px;
+               padding: 10px;
+               margin: 10px 0;
+               max-width: 40vw;
+               width: auto;
+               position: relative;
+               clear: both;
+            }
+            .received {
+               border-color: #ccc;
+               background-color: #ddd;
+               float: left;
+               color: black;
+            }
+            .sent{
+               float: right;
+               text-align: right;
+            }
+            /* Clear floats */
+            .container::after {
+            content: "";
+            clear: both;
+            display: table;
+            }
+
+            /* Style images */
+            .container img {
+            float: left;
+            max-width: 60px;
+            width: 100vw;
+            margin-right: 20px;
+            border-radius: 50%;
+            }
+
+            /* Style the right image */
+            .container img.right {
+            float: right;
+            margin-left: 20px;
+            margin-right:0;
+            }
+
+            /* Style time text */
+            .time-right {
+            color: #f9f9f9;
+            }
+
+            /* Style time text */
+            .time-left {
+            color: #777;
+            }
+         </style>
+         <div class="Messagebox" id='chat'>
             <?php
-            echo "No messages yet";
+               include "loadmessages.php";
             ?>
          </div>
 
 
          <form action="" method="post" class="messageText-form">
             <div class="TextEntry">
-               <input type="text">
-               <button> send </button>
+               <input type="text" name='typedmessage'>
+               <button name="sendbtn">send</button>
                <button>file</button>
             </div>
          </form>
       </div>
       </div>
    </div>
-        
+   <script language="javascript" type="text/javascript">
+      setInterval(function(){
+         //setInterval() method execute on every interval until called clearInterval()
+         $('#chat').load("loadmessages.php?user=<?php echo $params['user']; ?>").fadeIn("slow");
+         //load() method fetch data from fetch.php page
+      }, 1000);
+
+      var element = document.getElementById("chat");
+      element.scrollTop = element.scrollHeight;
+      
+   </script>
    </body>
