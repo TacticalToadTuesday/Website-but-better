@@ -9,7 +9,7 @@
     $url_components = parse_url($uri);
     parse_str($url_components['query'], $params);
 
-    $sql = "SELECT * FROM `{$_SESSION['username']}-{$params['user']}`";
+    $sql = "SELECT * FROM `{$_SESSION['username']}-{$params['user']}` LIMIT 50";
 
      $servername = "db";
      $username = "root";
